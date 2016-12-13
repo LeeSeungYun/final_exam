@@ -16,9 +16,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // need something here
+        ArrayList<Employee> data = new ArrayList<>();
 
-        adapter = new MyBaseAdapter(this, emp_list);
+        adapter = new MyBaseAdapter(this, data);
         listview = (ListView) findViewById(R.id.listView1) ;
         listview.setAdapter(adapter);
         listview.setOnItemClickListener((AdapterView.OnItemClickListener)adapter);
@@ -28,28 +28,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         EditText edit_name = (EditText) findViewById(R.id.edit_name);
         EditText edit_age = (EditText) findViewById(R.id.edit_age);
         EditText edit_salary = (EditText) findViewById(R.id.edit_salary);
-
-        Employee employee;
+        Employee employee = null;
+        if(adapter.mData.size() != 0){
+            employee = (Employee) adapter.mData.get(adapter.selected_position);
+        }
 
         switch (v.getId()){
             case R.id.btn_inc:
-                // need something here
+                employee.increase();
                 break;
 
             case R.id.btn_dec:
-                // need something here
+                employee.decrease();
                 break;
 
             case R.id.btn_store:
-                // need something here
+                employee = new Employee(edit_name.getText().toString(),Integer.valueOf(edit_age.getText().toString()),
+                        Integer.valueOf(edit_salary.getText().toString()));
+                adapter.add(employee);
                 break;
 
             case R.id.btn_modify:
-                // need something here
+                employee.setName(edit_name.getText().toString());
+                employee.setAge(Integer.valueOf(edit_age.getText().toString()));
+                employee.setSalary(Integer.valueOf(edit_salary.getText().toString()));
                 break;
 
             case R.id.btn_delete:
-                // need something here
+                adapter.delete(adapter.selected_position);
                 break;
         }
     }
